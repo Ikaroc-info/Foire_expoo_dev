@@ -1,18 +1,13 @@
 // src/components/PageDialog.tsx
 import React, { useState } from "react";
-import {
-  Box,
-  TextField,
-  IconButton,
-  Typography,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
-} from "@mui/material";
+import { Box, TextField, IconButton } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import SMSConversation from "../SmsComponent";
 import type { Message } from "../App";
 import type { DialogProps } from "./PageContainerComponent";
+import OptionSelector from "./OptionSelectorComponent";
+import colors from "../config/color";
+import InputBar from "./InputBarComponent";
 
 const PageDialog: React.FC<DialogProps> = (dialogProps) => {
   const [input, setInput] = useState("");
@@ -82,56 +77,30 @@ const PageDialog: React.FC<DialogProps> = (dialogProps) => {
 
   return (
     <Box display="flex" flexDirection="column" height="100%">
-      {dialogProps.options && (
-        <Box p={1} borderBottom={1} borderColor="divider">
-          <Typography variant="subtitle2" gutterBottom>
-            Choisissez les options :
-          </Typography>
-          <FormGroup row>
-            {dialogProps.options.map((opt) => (
-              <FormControlLabel
-                key={opt}
-                control={
-                  <Checkbox
-                    checked={dialogProps.statsLabels?.includes(opt)}
-                    onChange={() => toggleOption(opt)}
-                  />
-                }
-                label={opt}
-              />
-            ))}
-          </FormGroup>
-        </Box>
+      {dialogProps.options && dialogProps.setStatsLabels && (
+        <OptionSelector
+          options={dialogProps.options}
+          selectedOptions={dialogProps.statsLabels as string[]}
+          onToggle={toggleOption}
+        />
       )}
       {/* zone scrollable */}
       <Box
         flex={1}
         sx={{
           overflowY: "auto", // permet le scroll si la liste est longue
-          backgroundColor: "grey.100",
+          backgroundColor: colors.clearBackgroundColor, // couleur de fond claire
         }}
       >
         <SMSConversation messages={dialogProps.messages} />
       </Box>
-
       {/* input + send */}
-      <Box display="flex" alignItems="center" p={1}>
-        <TextField
-          fullWidth
-          placeholder="Votre message…"
-          value={input}
-          disabled={sending}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSend()}
-        />
-        <IconButton
-          color="primary"
-          onClick={handleSend}
-          disabled={sending || !input.trim()}
-        >
-          <SendIcon />
-        </IconButton>
-      </Box>
+      <InputBar
+        value={input}
+        onChange={setInput}
+        onSend={handleSend}
+        disabled={sending}
+      />
     </Box>
   );
 };

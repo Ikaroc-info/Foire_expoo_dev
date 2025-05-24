@@ -2,6 +2,7 @@ import React from "react";
 import { AppBar, Tabs, Tab, Toolbar } from "@mui/material";
 import type { PageId } from "./App";
 import strings from "./config/strings";
+import colors from "./config/color";
 
 interface MenuBarProps {
   pageId: number;
@@ -14,20 +15,27 @@ const MenuBar: React.FC<MenuBarProps> = ({ pageId, setPageId }) => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar
+      position="static"
+      sx={{
+        backgroundColor: colors.secondaryBackgroundColor,
+        color: colors.textColor,
+        boxShadow: "none",
+        borderBottom: `2px solid ${colors.backgroundColor}`,
+      }}
+    >
       <Toolbar disableGutters>
         <Tabs
           value={pageId}
           onChange={handleChange}
-          textColor="inherit"
           indicatorColor="primary"
           sx={{
             "& .MuiTab-root.Mui-selected": {
-              backgroundColor: "white",
-              color: "black",
+              backgroundColor: colors.primaryColor,
+              color: colors.darkTextColor,
             },
             "& .MuiTab-root": {
-              color: "white",
+              color: colors.textColor,
               backgroundColor: "transparent",
             },
           }}

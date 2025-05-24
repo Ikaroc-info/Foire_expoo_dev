@@ -1,6 +1,7 @@
 // src/components/PageAccueil.tsx
 import React, { useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
+import colors from "../config/color";
 
 const PageAccueil: React.FC = () => {
   const [content, setContent] = useState<string>("");
@@ -22,7 +23,7 @@ const PageAccueil: React.FC = () => {
       flex={1}
       p={2}
       sx={{
-        bgcolor: "grey.100",
+        bgcolor: colors.clearBackgroundColor,
         overflow: "auto", // permet le scroll si le texte dépasse
         whiteSpace: "pre-wrap", // conserve les sauts de ligne
       }}

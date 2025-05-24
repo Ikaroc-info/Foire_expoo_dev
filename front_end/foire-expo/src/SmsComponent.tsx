@@ -1,6 +1,7 @@
 // src/components/SMSConversation.tsx
 import React from "react";
 import { Box, Typography } from "@mui/material";
+import colors from "./config/color";
 
 type Message = [0 | 1, string];
 
@@ -22,8 +23,10 @@ const SMSConversation: React.FC<SMSConversationProps> = ({ messages }) => {
             px={2}
             py={1}
             borderRadius={2}
-            bgcolor={author === 0 ? "grey.300" : "primary.main"}
-            color={author === 0 ? "text.primary" : "common.white"}
+            bgcolor={
+              author === 0 ? colors.backgroundColor : colors.secondaryColor
+            }
+            color={author === 0 ? colors.textColor : "text.primary"}
           >
             <Typography variant="body1">{text}</Typography>
           </Box>

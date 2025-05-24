@@ -4,6 +4,7 @@ import Footer from "./FooterComponent";
 import PageContainer from "./Pages/PageContainerComponent";
 import { Box } from "@mui/material";
 import strings from "./config/strings";
+import colors from "./config/color";
 export type Message = [0 | 1, string];
 
 export type PageId = 0 | 1 | 2 | 3;
@@ -51,12 +52,16 @@ function App() {
       display="flex"
       flexDirection="column"
       height="95vh" // prend toute la hauteur de la fenêtre
+      sx={{
+        bgcolor: colors.backgroundColor, // fond gris clair
+        overflow: "hidden", // pas de scroll sur le conteneur principal
+      }}
     >
       <MenuBar pageId={pageId} setPageId={setPageId} />
       <Box
         component="main"
         flex={1} // prend tout l’espace restant
-        bgcolor="grey.500" // fond gris clair
+        bgcolor={colors.backgroundColor} // fond gris clair
         overflow="auto" // scroll si le contenu déborde
       >
         <PageContainer pageId={pageId} pageProps={pageProps} />

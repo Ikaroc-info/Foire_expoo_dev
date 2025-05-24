@@ -2,8 +2,6 @@ import re
 import random
 from collections import defaultdict
 
-from torch import mode
-
 
 def extracteur_texte(nom_fichier):
     chemin_fichier = f"./data_stats/{nom_fichier}.txt"
