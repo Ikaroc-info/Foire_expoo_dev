@@ -2,6 +2,8 @@ import re
 import random
 from collections import defaultdict
 
+from torch import mode
+
 
 def extracteur_texte(nom_fichier):
     chemin_fichier = f"./data_stats/{nom_fichier}.txt"
@@ -43,7 +45,10 @@ def stat_generation(string_initiale, liste_corpus, n=2, longueur=50):
 
     # === Construction du modèle ===
     modele = construire_modele(tokens, n=n)
-
+    if not modele or modele.keys() == []:
+        raise ValueError(
+            "Le modèle n-gramme est vide. Veuillez vérifier les données d'entrée."
+        )
     # === Initialisation avec la string_initiale ===
     prefix_tokens = tokenizer(string_initiale)
     prefix = (

@@ -46,7 +46,10 @@ def call_stat():
         or str_list == []
     ):
         return jsonify({"error": "Missing input or list"}), 400
-    result = stat(input_str, str_list)
+    try:
+        result = stat(input_str, str_list)
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 404
     return jsonify({"result": result})
 
 

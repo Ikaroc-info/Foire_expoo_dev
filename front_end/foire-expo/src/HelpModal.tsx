@@ -7,7 +7,7 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import helpText from "./data/helpContent";
+import strings from "./config/strings";
 
 interface HelpModalProps {
   open: boolean;
@@ -17,7 +17,7 @@ interface HelpModalProps {
 const HelpModal: React.FC<HelpModalProps> = ({ open, onClose }) => (
   <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
     <DialogTitle>
-      Aide
+      {strings.helpModal.title}
       <IconButton
         aria-label="fermer"
         onClick={onClose}
@@ -26,9 +26,9 @@ const HelpModal: React.FC<HelpModalProps> = ({ open, onClose }) => (
         <CloseIcon />
       </IconButton>
     </DialogTitle>
-    <DialogContent dividers sx={{ p: 2, maxHeight: "60vh", overflowY: "auto" }}>
+    <DialogContent dividers sx={{ p: 2, maxHeight: "30vh", overflowY: "auto" }}>
       <Typography component="div" whiteSpace="pre-wrap">
-        {helpText}
+        {strings.helpModal.content}
       </Typography>
     </DialogContent>
   </Dialog>

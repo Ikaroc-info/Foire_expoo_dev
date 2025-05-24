@@ -3,7 +3,7 @@ import MenuBar from "./MenuBarComponent";
 import Footer from "./FooterComponent";
 import PageContainer from "./Pages/PageContainerComponent";
 import { Box } from "@mui/material";
-
+import strings from "./config/strings";
 export type Message = [0 | 1, string];
 
 export type PageId = 0 | 1 | 2 | 3;
@@ -23,16 +23,16 @@ function App() {
   const [pageId, setPageId] = useState<PageId>(0);
   // Message list of Eliza
   const [messagesEliza, setMessagesEliza] = useState<Message[]>([
-    [0, "Bonjour! Je suis Elisa, comment puis-je vous aider ?"],
+    [0, strings.greetings.elisa],
   ]);
   // Message list of Stats
   const [messagesStats, setMessagesStats] = useState<Message[]>([
-    [0, "Bonjour! Je suis Stats, comment puis-je vous aider ?"],
+    [0, strings.greetings.stats],
   ]);
   const [statsLabels, setStatsLabels] = useState<string[]>([]);
   // Message list of the LLM
   const [messagesLLM, setMessagesLLM] = useState<Message[]>([
-    [0, "Bonjour! Je suis LLM, comment puis-je vous aider ?"],
+    [0, strings.greetings.llm],
   ]);
 
   const pageProps: PageProps = {

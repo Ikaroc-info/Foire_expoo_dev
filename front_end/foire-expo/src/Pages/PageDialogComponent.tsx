@@ -17,54 +17,66 @@ import type { DialogProps } from "./PageContainerComponent";
 const PageDialog: React.FC<DialogProps> = (dialogProps) => {
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
   const toggleOption = (opt: string) => {
-    setSelectedOptions((prev) =>
-      prev.includes(opt) ? prev.filter((o) => o !== opt) : [...prev, opt]
-    );
     if (!dialogProps.setStatsLabels) return;
-    dialogProps.setStatsLabels((prev) =>
-      prev.includes(opt) ? prev.filter((o) => o !== opt) : [...prev, opt]
+    dialogProps.setStatsLabels((previous) =>
+      previous.includes(opt)
+        ? previous.filter((o) => o !== opt)
+        : [...previous, opt]
     );
   };
 
-  const handleSend = async () => {
-    const text = input.trim();
-    if (!text) return;
+  const handleError = (error: Error, code: number) => {
+    console.error("An error occurred:", error);
+    // If error is 404, it means the answer is not available
+    if (code === 404) {
+      dialogProps.setMessages((prev) => [
+        ...prev,
+        [0, "Désolé, je ne sais pas comment répondre."] as Message,
+      ]);
+      setSending(false);
+      return;
+    }
+    dialogProps.setMessages((prev) => [
+      ...prev,
+      [0, "Une erreur est survenue. Veuillez réessayer plus tard."] as Message,
+    ]);
+    setSending(false);
+  };
 
-    // Ajout du message utilisateur (author = 1)
+  const handleSend = async () => {
+    // If the input is empty, or we are already sending something, do nothing
+    const text = input.trim();
+    if (!text || sending) return;
+    // Add the message from the user (author = 1)
     dialogProps.setMessages((prev) => [...prev, [1, text] as Message]);
     setInput("");
     setSending(true);
+    // Prepare the payload for the API call
+    const payload = dialogProps.buildPayload(text);
+    // Make the API call
 
     try {
-      // Appel API
-      const payload = dialogProps.buildPayload(text);
       const res = await fetch(dialogProps.url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const { result, error } = await res.json();
-      if (error) {
-        console.error("API error:", error);
-        dialogProps.setMessages((prev) => [
-          ...prev,
-          [0, "Veuillez sélectionner une source de donnée"] as Message,
-        ]);
+
+      const data = await res.json();
+      if (!res.ok || !data.result) {
+        handleError(new Error(data.error || "Erreur inconnue"), res.status);
         return;
       }
-
-      // selon ton backend, adapte la clef : ici on prend result comme clef du JSON
-      const reply = result as string;
-
-      // 3Ajout de la réponse (author = 0 puisque c'est le bot)
+      // Get the reply from the response
+      const reply = data.result as string;
+      // Add the reply from the bot (author = 0)
       dialogProps.setMessages((prev) => [...prev, [0, reply] as Message]);
-    } catch (err) {
-      console.error("API error:", err);
-    } finally {
       setSending(false);
+    } catch (error) {
+      handleError(error as Error, 500);
+      return;
     }
   };
 
@@ -81,7 +93,7 @@ const PageDialog: React.FC<DialogProps> = (dialogProps) => {
                 key={opt}
                 control={
                   <Checkbox
-                    checked={selectedOptions.includes(opt)}
+                    checked={dialogProps.statsLabels?.includes(opt)}
                     onChange={() => toggleOption(opt)}
                   />
                 }

@@ -1,6 +1,7 @@
 import React from "react";
 import { AppBar, Tabs, Tab, Toolbar } from "@mui/material";
 import type { PageId } from "./App";
+import strings from "./config/strings";
 
 interface MenuBarProps {
   pageId: number;
@@ -19,13 +20,22 @@ const MenuBar: React.FC<MenuBarProps> = ({ pageId, setPageId }) => {
           value={pageId}
           onChange={handleChange}
           textColor="inherit"
-          indicatorColor="secondary"
-          sx={{ ml: 2 }}
+          indicatorColor="primary"
+          sx={{
+            "& .MuiTab-root.Mui-selected": {
+              backgroundColor: "white",
+              color: "black",
+            },
+            "& .MuiTab-root": {
+              color: "white",
+              backgroundColor: "transparent",
+            },
+          }}
         >
-          <Tab label="Accueil" />
-          <Tab label="Elisa" />
-          <Tab label="Stats" />
-          <Tab label="LLM" />
+          <Tab label={strings.menu.accueil} />
+          <Tab label={strings.menu.elisa} />
+          <Tab label={strings.menu.stats} />
+          <Tab label={strings.menu.llm} />
         </Tabs>
       </Toolbar>
     </AppBar>

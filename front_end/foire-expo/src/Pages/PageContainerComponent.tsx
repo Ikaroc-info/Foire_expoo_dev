@@ -2,6 +2,7 @@ import React from "react";
 import PageAccueil from "./PageAccueilComponent";
 import type { Message, PageProps } from "../App";
 import PageDialog from "./PageDialogComponent";
+import statsOptions from "../config/statsConfig";
 
 export type PageContainerProps = {
   pageId: number;
@@ -45,7 +46,7 @@ const PageContainer: React.FC<PageContainerProps> = ({ pageId, pageProps }) => {
     }),
     statsLabels: pageProps.statsLabels,
     setStatsLabels: pageProps.setStatsLabels,
-    options: ["La bible", "Harry Potter", "Another Book"],
+    options: statsOptions.stats,
   };
   const dialogLLM: DialogProps = {
     messages: pageProps.messagesLLM,
