@@ -1,7 +1,6 @@
 // src/components/PageDialog.tsx
 import React, { useState } from "react";
-import { Box, TextField, IconButton } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
+import { Box } from "@mui/material";
 import SMSConversation from "../SmsComponent";
 import type { Message } from "../App";
 import type { DialogProps } from "./PageContainerComponent";
